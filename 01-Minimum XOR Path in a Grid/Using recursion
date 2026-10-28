@@ -1,0 +1,20 @@
+class Solution {
+    public int helper(int[][] grid, int i, int j){
+        if(i<0 || j<0){
+            return -1;
+        }
+        if(i == 0  && j == 0){
+            return grid[0][0];
+        }
+        int up = (helper(grid,i-1,j) == -1)?-1:grid[i][j] ^ helper(grid,i-1,j);
+        int left = (helper(grid,i,j-1) == -1)?-1:grid[i][j] ^ helper(grid,i,j-1);
+        if(up == -1) return left;
+        if(left == -1) return up;
+        return Math.min(up,left);
+    }
+    public int minCost(int[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+        return helper(grid,n-1,m-1);
+    }
+}

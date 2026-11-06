@@ -1,0 +1,25 @@
+class Solution {
+    public int[] countServers(int n, int[][] logs, int x, int[] queries) {
+     int[] ans = new int[queries.length];
+     for(int i = 0;i<queries.length;i++){
+        int start = queries[i] - x;
+        int end = queries[i];
+        boolean active [] = new boolean[n+1];
+        for(int log[] : logs){
+            int server = log[0];
+            int time = log[1];
+            if(time>=start && time<=end){
+                active[server] = true;
+            }
+        }
+        int cnt = 0;
+        for(int j = 1;j<=n;j++){
+            if(!active[j]){
+                cnt++;
+            }
+        }
+        ans[i] = cnt;
+     }
+     return ans;
+    }
+}

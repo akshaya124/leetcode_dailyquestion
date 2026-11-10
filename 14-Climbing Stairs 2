@@ -1,0 +1,18 @@
+class Solution {
+    int dp[];
+  
+    public int climbStairs(int n, int[] costs) {
+        dp = new int[n+1];
+        Arrays.fill(dp,Integer.MAX_VALUE/2);
+        dp[0] = 0;
+        for(int i = 1;i<=n;i++){
+            for(int k = 1;k<=3;k++){
+                if(i-k >= 0){
+                    int jumpcost = costs[i-1] + k*k;
+                    dp[i] = Math.min(dp[i], dp[i-k] + jumpcost);
+                }
+            }
+        }
+        return dp[n];
+    }
+}

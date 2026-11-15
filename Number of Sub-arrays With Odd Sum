@@ -1,0 +1,20 @@
+class Solution {
+    public int numOfSubarrays(int[] arr) {
+        long mod = 1000000007;
+        long odcnt = 0;
+        long evncnt = 1;
+        long currsum = 0;
+        long res = 0;
+        for(int num:arr){
+            currsum += num;
+            if(currsum %2 != 0){
+                res = (res+evncnt)%mod;
+                odcnt++;
+            }else{
+                res = (res+odcnt)%mod;
+                evncnt++;
+            }
+        }
+        return (int)res;
+    }
+}

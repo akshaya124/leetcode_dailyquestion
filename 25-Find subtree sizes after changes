@@ -1,0 +1,73 @@
+
+import java.util.*;
+
+class Solution {
+    int[] ans;
+    List<Integer>[] graph;
+
+    public int[] findSubtreeSizes(int[] parent, String s) {
+        int n = parent.length;
+
+        graph = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+
+        for (int i = 1; i < n; i++) {
+            graph[parent[i]].add(i);
+        }
+
+        int[] nearest = new int[26];
+        Arrays.fill(nearest, -1);
+
+        int[] newParent = parent.clone();
+
+        dfs1(0, parent, s, nearest, newParent);
+
+        List<Integer>[] newGraph = new ArrayList[n];
+
+        for (int i = 0; i < n; i++) {
+            newGraph[i] = new ArrayList<>();
+        }
+
+        for (int i = 1; i < n; i++) {
+            newGraph[newParent[i]].add(i);
+        }
+
+        ans = new int[n];
+        dfs2(0, newGraph);
+
+        return ans;
+    }
+
+    void dfs1(int node, int[] parent, String s,
+              int[] nearest, int[] newParent) {
+
+        int c = s.charAt(node) - 'a';
+
+        int old = nearest[c];
+
+        if (old != -1) {
+            newParent[node] = old;
+        }
+
+        nearest[c] = node;
+
+        for (int child : graph[node]) {
+            dfs1(child, parent, s, nearest, newParent);
+        }
+
+        nearest[c] = old;
+    }
+
+    int dfs2(int node, List<Integer>[] newGraph) {
+        int size = 1;
+
+        for (int child : newGraph[node]) {
+            size += dfs2(child, newGraph);
+        }
+
+        ans[node] = size;
+        return size;
+    }
+}
